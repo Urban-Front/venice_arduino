@@ -45,7 +45,14 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(60, 13, PIN,
   NEO_GRB            + NEO_KHZ800);
 
 String message = "PATRIARCHY";
-int pixelsInMessage = (message.length() * 10) + 8;
+int percent = 23;
+String subMessage = "%";
+bool isRed = false;
+uint16_t red = matrix.Color(255, 20, 60);
+uint16_t green = matrix.Color(20, 255, 60);
+uint16_t yellow = matrix.Color(240, 240, 40);
+uint16_t white = matrix.Color(255, 255, 255);
+int pixelsInMessage = (message.length() * 10) + 22;
 int x = matrix.width();
 int count = 0;
 
@@ -56,22 +63,48 @@ void setup() {
   matrix.setFont(&FreeSansBold9pt7b);
   matrix.setTextColor(matrix.Color(255, 255, 255));
   matrix.setTextSize(1);
-  matrix.setBrightness(4);
+  matrix.setBrightness(8);
+  Serial.begin(9600);
 }
 
 void loop() {
   matrix.fillScreen(0);
-  matrix.setCursor(x, 10);
+  matrix.setCursor(x, 6);
+  matrix.setTextColor(white);
+  matrix.setFont(&FreeSansBold9pt7b);
   matrix.print(message);
-  if(--x < -pixelsInMessage) {
-    count++;
-    x = matrix.width();
-    if (count % 2 == 0) {
-      matrix.setTextColor(matrix.Color(255, 40, 10));
-    } else {
-      matrix.setTextColor(matrix.Color(255, 255, 255));
+  matrix.setCursor(x + pixelsInMessage + 12, 6);
+  Serial.println(x);
+  if (isRed) { // Going down
+    for (int i = 1; i < 5; i++) {
+      matrix.drawFastHLine(x + pixelsInMessage - i + 6, 5 - i + 1, i, red);
     }
+    for (int j = 1; j < 5; j++) {
+      matrix.drawFastHLine(x + pixelsInMessage + 6, 5 - j + 1, j, red);
+    }
+    matrix.setTextColor(yellow);
+  } else { // Going up
+    for (int i = 1; i < 5; i++) {
+      matrix.drawFastHLine(x + pixelsInMessage - i + 6, i + 1, i, green);
+    }
+    for (int j = 1; j < 5; j++) {
+      matrix.drawFastHLine(x + pixelsInMessage + 6, j + 1, j, green);
+    }
+    matrix.setTextColor(yellow);
+  }
+  matrix.setFont();
+  matrix.print(String(percent + subMessage));
+  if(--x < -pixelsInMessage - 24) {
+    count++;
+    int ran = int(random(-8, 10));
+    if (ran < 0) {
+      isRed = true;
+    } else {
+      isRed = false;
+    }
+    percent = constrain(percent + ran, -99, 99);
+    x = matrix.width();
   }
   matrix.show();
-  delay(50);
+  delay(10);
 }
