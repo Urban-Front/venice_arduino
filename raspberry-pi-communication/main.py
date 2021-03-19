@@ -2,20 +2,22 @@
 import serial
 import time
 
-x = 0
-
 if __name__ == '__main__':
-  ser1 = serial.Serial('/dev/tty.usbmodem14101', 9600, timeout=1)
-  ser2 = serial.Serial('/dev/tty.usbmodem14201', 9600, timeout=1)
-  ser1.flush()
-  ser2.flush()
+  serial1 = serial.Serial('/dev/tty.usbmodem14101', 9600, timeout=1)
+  serial2 = serial.Serial('/dev/tty.usbmodem14201', 9600, timeout=1)
+  serials = [serial1, serial2]
+  i = 0
+  x = 0
+  while i < len(serials):
+    serials[i].flush()
+    i+=1
   while True:
-    x = x + 1
     tosend = str(x) + '\n';
-    ser1.write(tosend.encode('utf-8'))
-    ser2.write(tosend.encode('utf-8'))
-    line1 = ser1.readline().decode('utf-8').rstrip()
-    print('from one: ' + line1)
-    line2 = ser2.readline().decode('utf-8').rstrip()
-    print('from two: ', line2)
+    j = 0
+    while j < len(serials):
+      serials[j].write(tosend.encode('utf-8'))
+      line = serials[j].readline().decode('utf-8').rstrip()
+      print('From {num}: {message}'.format(num=j, message=line))
+      j+=1
     time.sleep(0.1)
+    x+=1
