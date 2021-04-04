@@ -46,7 +46,7 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(60, 13, PIN,
 
 String message = "PATRIARCHY";
 int percent = 23;
-String subMessage = "%";
+String subMessage = "";
 bool isRed = false;
 uint16_t red = matrix.Color(255, 20, 60);
 uint16_t green = matrix.Color(20, 255, 60);
@@ -56,6 +56,7 @@ int pixelsInMessage = (message.length() * 10) + 22;
 int w = matrix.width();
 int x = 0;
 int counter = 0;
+float price = 0.0;
 
 void setup() {
   matrix.begin();
@@ -72,10 +73,19 @@ void setup() {
 void loop() {
   if (Serial.available() > 0) {
     String data = Serial.readStringUntil('\n');
-    counter = data.toInt();
+    counter = data.substring(0, data.indexOf(':')).toInt();
+    float newPrice = data.substring(data.indexOf(':') + 1).toFloat();
+    if (newPrice != price) {
+      if (newPrice < price) {
+        isRed = true;
+      } else {
+        isRed = false;
+      }
+    }
+    price = newPrice;
     Serial.print("Data: ");
     Serial.println(data);
-    x = counter;
+    x = counter % (pixelsInMessage + 24 + w);
     matrix.fillScreen(0);
     matrix.setCursor(-x + w, 6);
     matrix.setTextColor(white);
@@ -84,7 +94,7 @@ void loop() {
     matrix.setCursor(-x + w + pixelsInMessage + 12, 6);
     if (isRed) { // Going down
       for (int i = 1; i < 5; i++) {
-        matrix.drawFastHLine(x + pixelsInMessage - i + 6, 5 - i + 1, i, red);
+        matrix.drawFastHLine(-x + w + pixelsInMessage - i + 6, 5 - i + 1, i, red);
       }
       for (int j = 1; j < 5; j++) {
         matrix.drawFastHLine(-x + w + pixelsInMessage + 6, 5 - j + 1, j, red);
@@ -100,17 +110,7 @@ void loop() {
       matrix.setTextColor(yellow);
     }
     matrix.setFont();
-    matrix.print(String(percent + subMessage));
+    matrix.print(String(price + subMessage));
     matrix.show();
-    // Change the arrow
-    if(x == 0) {
-      int ran = int(random(-8, 10));
-      if (ran < 0) {
-        isRed = true;
-      } else {
-        isRed = false;
-      }
-      percent = constrain(percent + ran, -99, 99);
-    }
   }
 }
