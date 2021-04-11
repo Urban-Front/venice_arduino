@@ -52,7 +52,7 @@ uint16_t red = matrix.Color(255, 20, 60);
 uint16_t green = matrix.Color(20, 255, 60);
 uint16_t yellow = matrix.Color(240, 240, 40);
 uint16_t white = matrix.Color(255, 255, 255);
-int pixelsInMessage = (message.length() * 10) + 22;
+int pixelsInMessage = (message.length() * 11) + 11;
 int w = matrix.width();
 int x = 0;
 int counter = 0;
@@ -65,7 +65,7 @@ void setup() {
   matrix.setFont(&FreeSansBold9pt7b);
   matrix.setTextColor(matrix.Color(255, 255, 255));
   matrix.setTextSize(1);
-  matrix.setBrightness(8);
+  matrix.setBrightness(16);
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(230400);
 }
