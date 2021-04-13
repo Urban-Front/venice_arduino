@@ -13,7 +13,7 @@ if __name__ == '__main__':
   handler.setFormatter(formatter)
   root_logger.addHandler(handler)
   # To get these from terminal: $ ls /dev/tty.*
-  serialStrings = ['/dev/tty.usbmodem14101']
+  serialStrings = ['/dev/tty.usbmodem14201']
   serials = []
   for serialString in serialStrings:
     serials.append(serial.Serial(serialString, 230400, timeout=1))
