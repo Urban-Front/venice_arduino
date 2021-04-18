@@ -19,3 +19,10 @@ Send and receive data from raspberry pi to multiple arduinos simultaneously.
 In this case we'd use one raspberry pi to control multiple arduinos, basically to keep them on the same timeline for the animations.
 
 See [this example](https://roboticsbackend.com/raspberry-pi-arduino-serial-communication/)
+
+### Final
+
+* rp
+	* Raspberry pi code – for the Pi to send data to the arduinos
+* arduino
+	* Arduino code – for the panels to display text
