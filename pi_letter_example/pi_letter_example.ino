@@ -48,7 +48,7 @@ String message = "PATRIARCHY";
 int percent = 23;
 String subMessage = "";
 bool isRed = false;
-uint16_t red = matrix.Color(255, 20, 60);
+uint16_t red = matrix.Color(255, 20, 20);
 uint16_t green = matrix.Color(20, 255, 60);
 uint16_t yellow = matrix.Color(240, 240, 40);
 uint16_t white = matrix.Color(255, 255, 255);
@@ -65,7 +65,7 @@ void setup() {
   matrix.setFont(&FreeSansBold9pt7b);
   matrix.setTextColor(matrix.Color(255, 255, 255));
   matrix.setTextSize(1);
-  matrix.setBrightness(16);
+  matrix.setBrightness(85);
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(230400);
 }
