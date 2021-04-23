@@ -42,7 +42,7 @@ uint16_t white = matrix.Color(255, 255, 255);
 // This is always going to be 60
 int w = matrix.width();
 // Price – which we use to determine up/down arrow as well
-float prices[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
+float prices[5] = {99.99, 0.0, 0.0, 0.0, 0.0};
 float newPrices[5] = {0.0, 0.0, 0.0, 0.0, 0.0};
 // This might need to be adjusted manually,
 // because our font isn't monospaced,
@@ -75,7 +75,7 @@ void loop() {
     Serial.print("Data: ");
     Serial.println(data);
     int counter = data.substring(0, data.indexOf(':')).toInt();
-    for (int i = 0; i < NUM_ITEMS; i++) {
+    for (int i = 1; i < NUM_ITEMS; i++) {
       newPrices[i] = data.substring(data.indexOf(':') + 1).toFloat();
       if (newPrices[i] != prices[i]) {
         if (newPrices[i] < prices[i]) {

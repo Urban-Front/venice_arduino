@@ -17,7 +17,7 @@
 #define PIN 6
 
 // CONSTANTS FOR WORDS
-#define NUM_ITEMS 4
+#define NUM_ITEMS 6
 #define WORD_GAP 120
 
 // In this application we'd like to use it as a 60x13 matrix,
@@ -29,11 +29,11 @@ Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(60, 13, PIN,
   NEO_GRB            + NEO_KHZ800);
 
 // Our message – can be changed
-String messages[4] = {"CAPITALISM", "RACISM", "COMMODIFICATION", "DISPLACEMENT"};
+String messages[6] = {"CAPITALISM", "POSITIVISM", "POLICE BRUTALITY", "COMMODIFICATION", "DISPLACEMENT", "ALIENATION"};
 // Our submessage – always empty to begin with
-String subMessages[4] = {"", "", "", ""};
+String subMessages[6] = {"", "", "", "", "", ""};
 // Whether our arrow is red or not
-bool isReds[4] = {false, false, false, false};
+bool isReds[6] = {false, false, false, false, false, false};
 // Our colors
 uint16_t red = matrix.Color(255, 20, 10);
 uint16_t green = matrix.Color(20, 255, 60);
@@ -42,14 +42,14 @@ uint16_t white = matrix.Color(255, 255, 255);
 // This is always going to be 60
 int w = matrix.width();
 // Price – which we use to determine up/down arrow as well
-float prices[4] = {0.0, 0.0, 0.0, 0.0};
-float newPrices[4] = {0.0, 0.0, 0.0, 0.0};
+float prices[6] = {99.99, 0.0, 0.0, 0.0, 0.0, 0.0};
+float newPrices[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 // This might need to be adjusted manually,
 // because our font isn't monospaced,
 // but it's how many pixels long our message is
-int pixelsInMessages[4] = {messages[0].length() * 12, messages[1].length() * 12, messages[2].length() * 12, messages[3].length() * 12};
+int pixelsInMessages[6] = {messages[0].length() * 12, messages[1].length() * 12, messages[2].length() * 12, messages[3].length() * 12, messages[4].length() * 12, messages[5].length() * 12};
 // This is our pixels plus the width of the panel
-int pixelsPlusWidths[4] = {pixelsInMessages[0] + w, pixelsInMessages[1] + w, pixelsInMessages[2] + w, pixelsInMessages[3] + w};
+int pixelsPlusWidths[6] = {pixelsInMessages[0] + w, pixelsInMessages[1] + w, pixelsInMessages[2] + w, pixelsInMessages[3] + w, pixelsInMessages[4] + w, pixelsInMessages[5] + w};
 // Offset: how many panels we are from the far right
 int offset = w * 0;
 int modulus = 0;
@@ -75,7 +75,7 @@ void loop() {
     Serial.print("Data: ");
     Serial.println(data);
     int counter = data.substring(0, data.indexOf(':')).toInt();
-    for (int i = 0; i < NUM_ITEMS; i++) {
+    for (int i = 1; i < NUM_ITEMS; i++) {
       newPrices[i] = data.substring(data.indexOf(':') + 1).toFloat();
       if (newPrices[i] != prices[i]) {
         if (newPrices[i] < prices[i]) {
